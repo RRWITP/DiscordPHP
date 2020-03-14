@@ -1,4 +1,7 @@
 ---
+name: "Bug Report"
+about: 'Report a general issue. Please check first the pull requests tab. for a bug in progress.'
+---
 
 ### Issue description
 
