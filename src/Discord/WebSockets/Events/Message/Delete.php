@@ -9,13 +9,13 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Message;
 
 use Discord\Repository\Channel\MessageRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class MessageDelete extends Event
+class Delete extends Event
 {
     /**
      * {@inheritdoc}

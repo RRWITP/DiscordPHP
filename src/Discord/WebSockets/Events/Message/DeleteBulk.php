@@ -9,19 +9,30 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Message;
 
+use Discord\Repository\Channel\MessageRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class MessageReactionAdd extends Event
+class DeleteBulk extends Event
 {
     /**
      * {@inheritdoc}
      */
     public function handle(Deferred $deferred, $data): void
     {
-        // todo
+        $messages = $this->discord->getRepository(
+            MessageRepository::class,
+            $data->channel_id,
+            'messages',
+            ['channel_id' => $data->channel_id]
+        );
+
+        foreach ($data->ids as $message) {
+            $messages->pull($message);
+        }
+
         $deferred->resolve($data);
     }
 }

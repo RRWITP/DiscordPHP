@@ -52,13 +52,13 @@ class Handlers
         $this->addHandler(Event::GUILD_BAN_REMOVE, \Discord\WebSockets\Events\Guild\BanRemove::class);
 
         // Message handlers
-        $this->addHandler(Event::MESSAGE_CREATE, \Discord\WebSockets\Events\MessageCreate::class, ['message']);
-        $this->addHandler(Event::MESSAGE_DELETE, \Discord\WebSockets\Events\MessageDelete::class);
-        $this->addHandler(Event::MESSAGE_DELETE_BULK, \Discord\WebSockets\Events\MessageDeleteBulk::class);
-        $this->addHandler(Event::MESSAGE_UPDATE, \Discord\WebSockets\Events\MessageUpdate::class);
-        $this->addHandler(Event::MESSAGE_REACTION_ADD, \Discord\WebSockets\Events\MessageReactionAdd::class);
-        $this->addHandler(Event::MESSAGE_REACTION_REMOVE, \Discord\WebSockets\Events\MessageReactionRemove::class);
-        $this->addHandler(Event::MESSAGE_REACTION_REMOVE_ALL, \Discord\WebSockets\Events\MessageReactionRemoveAll::class);
+        $this->addHandler(Event::MESSAGE_CREATE, \Discord\WebSockets\Events\Message\Create::class, ['message']);
+        $this->addHandler(Event::MESSAGE_DELETE, \Discord\WebSockets\Events\Message\Delete::class);
+        $this->addHandler(Event::MESSAGE_DELETE_BULK, \Discord\WebSockets\Events\Message\DeleteBulk::class);
+        $this->addHandler(Event::MESSAGE_UPDATE, \Discord\WebSockets\Events\Message\Update::class);
+        $this->addHandler(Event::MESSAGE_REACTION_ADD, \Discord\WebSockets\Events\Message\ReactionAdd::class);
+        $this->addHandler(Event::MESSAGE_REACTION_REMOVE, \Discord\WebSockets\Events\Message\ReactionRemove::class);
+        $this->addHandler(Event::MESSAGE_REACTION_REMOVE_ALL, \Discord\WebSockets\Events\Message\ReactionRemoveAll::class);
 
         // New Member Event handlers
         $this->addHandler(Event::GUILD_MEMBER_ADD, \Discord\WebSockets\Events\Guild\MemberAdd::class);

@@ -9,12 +9,12 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Message;
 
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class MessageReactionRemove extends Event
+class ReactionRemoveAll extends Event
 {
     /**
      * {@inheritdoc}

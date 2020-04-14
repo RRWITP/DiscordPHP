@@ -9,14 +9,14 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Message;
 
 use Discord\Parts\Channel\Message;
 use Discord\Repository\Channel\MessageRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class MessageUpdate extends Event
+class Update extends Event
 {
     /**
      * {@inheritdoc}
