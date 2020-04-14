@@ -1,12 +1,17 @@
 <?php
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Message;
 
 use Discord\Parts\Channel\Message;
 use Discord\Repository\Channel\MessageRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
+/**
+ * Class Create
+ *
+ * @package Discord\WebSockets\Events\Message
+ */
 class Create extends Event
 {
     /**

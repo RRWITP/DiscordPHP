@@ -1,6 +1,6 @@
 <?php
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use Discord\Parts\Channel\Channel;
 use Discord\Parts\Guild\Ban;
@@ -15,6 +15,11 @@ use Discord\Repository\Guild\RoleRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
+/**
+ * Class Create
+ *
+ * @package Discord\WebSockets\Events\Guild
+ */
 class Create extends Event
 {
     /**

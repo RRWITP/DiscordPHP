@@ -1,11 +1,16 @@
 <?php
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
+/**
+ * Class MemberRemove
+ *
+ * @package Discord\WebSockets\Events\Guild
+ */
 class MemberRemove extends Event
 {
     /**

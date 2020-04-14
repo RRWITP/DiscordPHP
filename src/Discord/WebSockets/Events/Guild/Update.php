@@ -1,6 +1,6 @@
 <?php
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use Discord\Parts\Guild\Guild;
 use Discord\Parts\Guild\Role;
@@ -8,6 +8,11 @@ use Discord\Repository\Guild\RoleRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
+/**
+ * Class Update
+ *
+ * @package Discord\WebSockets\Events\Guild
+ */
 class Update extends Event
 {
     /**

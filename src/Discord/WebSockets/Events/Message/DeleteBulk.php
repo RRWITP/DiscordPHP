@@ -1,11 +1,16 @@
 <?php
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Message;
 
 use Discord\Repository\Channel\MessageRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
+/**
+ * Class DeleteBulk
+ *
+ * @package Discord\WebSockets\Events\Message
+ */
 class DeleteBulk extends Event
 {
     /**

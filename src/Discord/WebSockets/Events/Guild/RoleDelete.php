@@ -1,10 +1,15 @@
 <?php
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use React\Promise\Deferred;
 use Discord\WebSockets\Event;
 
+/**
+ * Class RoleDelete
+ *
+ * @package Discord\WebSockets\Events\Guild
+ */
 class RoleDelete extends Event
 {
     /**

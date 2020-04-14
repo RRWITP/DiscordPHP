@@ -1,10 +1,15 @@
 <?php
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Message;
 
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
+/**
+ * Class ReactionRemove
+ *
+ * @package Discord\WebSockets\Events\Message
+ */
 class ReactionRemove extends Event
 {
     /**
