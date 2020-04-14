@@ -6,6 +6,11 @@ use Discord\Parts\WebSockets\PresenceUpdate as PresenceUpdatePart;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
+/**
+ * Class PresenceUpdate
+ *
+ * @package Discord\WebSockets\Events
+ */
 class PresenceUpdate extends Event
 {
     /**

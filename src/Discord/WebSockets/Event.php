@@ -10,37 +10,41 @@ use Evenement\EventEmitterTrait;
 use React\Promise\Deferred;
 
 /**
+ * Class Event
+ *
  * Contains constants for WebSocket events as well as handlers
  * for the events.
+ *
+ * @package Discord\Websockets
  */
 abstract class Event
 {
     use EventEmitterTrait;
 
     // General
-    const READY                = 'READY';
-    const RESUMED              = 'RESUMED';
-    const PRESENCE_UPDATE      = 'PRESENCE_UPDATE';
-    const PRESENCES_REPLACE    = 'PRESENCES_REPLACE';
-    const TYPING_START         = 'TYPING_START';
-    const USER_SETTINGS_UPDATE = 'USER_SETTINGS_UPDATE';
-    const VOICE_STATE_UPDATE   = 'VOICE_STATE_UPDATE';
-    const VOICE_SERVER_UPDATE  = 'VOICE_SERVER_UPDATE';
-    const GUILD_MEMBERS_CHUNK  = 'GUILD_MEMBERS_CHUNK';
+    public const READY                = 'READY';
+    public const RESUMED              = 'RESUMED';
+    public const PRESENCE_UPDATE      = 'PRESENCE_UPDATE';
+    public const PRESENCES_REPLACE    = 'PRESENCES_REPLACE';
+    public const TYPING_START         = 'TYPING_START';
+    public const USER_SETTINGS_UPDATE = 'USER_SETTINGS_UPDATE';
+    public const VOICE_STATE_UPDATE   = 'VOICE_STATE_UPDATE';
+    public const VOICE_SERVER_UPDATE  = 'VOICE_SERVER_UPDATE';
+    public const GUILD_MEMBERS_CHUNK  = 'GUILD_MEMBERS_CHUNK';
 
     // Guild
-    const GUILD_CREATE = 'GUILD_CREATE';
-    const GUILD_DELETE = 'GUILD_DELETE';
-    const GUILD_UPDATE = 'GUILD_UPDATE';
+    public const GUILD_CREATE         = 'GUILD_CREATE';
+    public const GUILD_DELETE         = 'GUILD_DELETE';
+    public const GUILD_UPDATE         = 'GUILD_UPDATE';
 
-    const GUILD_BAN_ADD       = 'GUILD_BAN_ADD';
-    const GUILD_BAN_REMOVE    = 'GUILD_BAN_REMOVE';
-    const GUILD_MEMBER_ADD    = 'GUILD_MEMBER_ADD';
-    const GUILD_MEMBER_REMOVE = 'GUILD_MEMBER_REMOVE';
-    const GUILD_MEMBER_UPDATE = 'GUILD_MEMBER_UPDATE';
-    const GUILD_ROLE_CREATE   = 'GUILD_ROLE_CREATE';
-    const GUILD_ROLE_UPDATE   = 'GUILD_ROLE_UPDATE';
-    const GUILD_ROLE_DELETE   = 'GUILD_ROLE_DELETE';
+    public const GUILD_BAN_ADD        = 'GUILD_BAN_ADD';
+    public const GUILD_BAN_REMOVE     = 'GUILD_BAN_REMOVE';
+    public const GUILD_MEMBER_ADD     = 'GUILD_MEMBER_ADD';
+    public const GUILD_MEMBER_REMOVE  = 'GUILD_MEMBER_REMOVE';
+    public const GUILD_MEMBER_UPDATE  = 'GUILD_MEMBER_UPDATE';
+    public const GUILD_ROLE_CREATE    = 'GUILD_ROLE_CREATE';
+    public const GUILD_ROLE_UPDATE    = 'GUILD_ROLE_UPDATE';
+    public const GUILD_ROLE_DELETE    = 'GUILD_ROLE_DELETE';
 
     // Channel
     const CHANNEL_CREATE      = 'CHANNEL_CREATE';
@@ -62,28 +66,28 @@ abstract class Event
      *
      * @var Http Client.
      */
-    protected $http;
+    protected HTTP $http;
 
     /**
      * The Factory.
      *
      * @var Factory Factory.
      */
-    protected $factory;
+    protected Factory $factory;
 
     /**
      * The cache.
      *
      * @var CacheWrapper Cache.
      */
-    protected $cache;
+    protected CacheWrapper $cache;
 
     /**
      * The Discord client instance.
      *
      * @var Discord Client.
      */
-    protected $discord;
+    protected Discord $discord;
 
     /**
      * Constructs an event.
@@ -95,12 +99,8 @@ abstract class Event
      *
      * @return void
      */
-    public function __construct(
-        Http $http,
-        Factory $factory,
-        CacheWrapper $cache,
-        Discord $discord
-    ) {
+    public function __construct(Http $http, Factory $factory, CacheWrapper $cache, Discord $discord)
+    {
         $this->http    = $http;
         $this->factory = $factory;
         $this->cache   = $cache;

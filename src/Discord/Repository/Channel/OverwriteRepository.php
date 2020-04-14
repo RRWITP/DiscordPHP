@@ -16,9 +16,7 @@ class OverwriteRepository extends AbstractRepository
     /**
      * {@inheritdoc}
      */
-    protected $endpoints = [
-        'delete' => 'channels/:channel_id/permissions/:id',
-    ];
+    protected $endpoints = ['delete' => 'channels/:channel_id/permissions/:id'];
 
     /**
      * {@inheritdoc}
