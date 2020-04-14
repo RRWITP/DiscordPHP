@@ -20,7 +20,7 @@ class MessageDelete extends Event
     /**
      * {@inheritdoc}
      */
-    public function handle(Deferred $deferred, $data)
+    public function handle(Deferred $deferred, $data): void
     {
         $messages = $this->discord->getRepository(
             MessageRepository::class,

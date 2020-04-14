@@ -29,7 +29,7 @@ class GuildCreate extends Event
     /**
      * {@inheritdoc}
      */
-    public function handle(Deferred $deferred, $data)
+    public function handle(Deferred $deferred, $data): void
     {
         if (isset($data->unavailable) && $data->unavailable) {
             $deferred->reject(['unavailable', $data->id]);

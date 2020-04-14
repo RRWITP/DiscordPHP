@@ -125,11 +125,10 @@ class Handlers
     /**
      * Removes a handler.
      *
-     * @param string $event The event handler to remove.
-     *
+     * @param  string $event The event handler to remove.
      * @return void
      */
-    public function removeHandler($event)
+    public function removeHandler($event): void
     {
         unset($this->handlers[$event]);
     }
