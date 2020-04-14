@@ -9,13 +9,13 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Voice;
 
 use Discord\Parts\WebSockets\VoiceStateUpdate as VoiceStateUpdatePart;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class VoiceStateUpdate extends Event
+class StateUpdate extends Event
 {
     /**
      * {@inheritdoc}

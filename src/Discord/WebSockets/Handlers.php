@@ -33,8 +33,8 @@ class Handlers
         // General
         $this->addHandler(Event::PRESENCE_UPDATE, \Discord\WebSockets\Events\PresenceUpdate::class);
         $this->addHandler(Event::TYPING_START, \Discord\WebSockets\Events\TypingStart::class);
-        $this->addHandler(Event::VOICE_STATE_UPDATE, \Discord\WebSockets\Events\VoiceStateUpdate::class);
-        $this->addHandler(Event::VOICE_SERVER_UPDATE, \Discord\WebSockets\Events\VoiceServerUpdate::class);
+        $this->addHandler(Event::VOICE_STATE_UPDATE, \Discord\WebSockets\Events\Voice\StateUpdate::class);
+        $this->addHandler(Event::VOICE_SERVER_UPDATE, \Discord\WebSockets\Events\Voice\ServerUpdate::class);
 
         // Guild Event handlers
         $this->addHandler(Event::GUILD_CREATE, \Discord\WebSockets\Events\Guild\Create::class);
