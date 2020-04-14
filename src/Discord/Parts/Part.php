@@ -129,14 +129,8 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
      *
      * @return void
      */
-    public function __construct(
-        Factory $factory,
-        Discord $discord,
-        Http $http,
-        CacheWrapper $cache,
-        array $attributes = [],
-        $created = false
-    ) {
+    public function __construct(Factory $factory, Discord $discord, Http $http, CacheWrapper $cache, array $attributes = [], bool  $created = false)
+    {
         $this->factory = $factory;
         $this->discord = $discord;
         $this->http    = $http;
@@ -149,7 +143,7 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
             $this->afterConstruct();
         }
 
-        $this->resolve = function ($response, $deferred) {
+        $this->resolve = static function ($response, $deferred): void {
             if (is_null($response)) {
                 $response = true;
             }
@@ -157,7 +151,7 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
             $deferred->resolve(true);
         };
 
-        $this->reject = function ($e, $deferred) {
+        $this->reject = static function ($e, $deferred) {
             $deferred->reject($e);
         };
     }
@@ -165,11 +159,10 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Fills the parts attributes from an array.
      *
-     * @param array $attributes An array of attributes to build the part.
-     *
+     * @param  array $attributes An array of attributes to build the part.
      * @return void
      */
-    public function fill($attributes)
+    public function fill($attributes): void
     {
         foreach ($attributes as $key => $value) {
             if (in_array($key, $this->fillable)) {
@@ -181,9 +174,11 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Clears the attribute cache.
      *
-     * @return bool Whether the attempt to clear the cache succeeded or failed.
+     * Returns whether the attempt to clear the cache succeeded or failed.
+     *
+     * @return bool
      */
-    public function clearCache()
+    public function clearCache(): bool
     {
         $this->attributes_cache = [];
 
@@ -193,12 +188,11 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Checks if there is a mutator present.
      *
-     * @param string $key  The attribute name to check.
-     * @param string $type Either get or set.
-     *
-     * @return mixed Either a string if it is callable or false.
+     * @param  string $key  The attribute name to check.
+     * @param  string $type Either get or set.
+     * @return mixed
      */
-    public function checkForMutator($key, $type)
+    public function checkForMutator(string $key, string $type)
     {
         $str = $type.Str::studly($key).'Attribute';
 
@@ -212,11 +206,10 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Replaces variables in string with syntax :{varname}.
      *
-     * @param string $string A string with placeholders.
-     *
-     * @return string A string with placeholders replaced.
+     * @param  string $string A string with placeholders.
+     * @return string
      */
-    public function replaceWithVariables($string)
+    public function replaceWithVariables(string $string): string
     {
         $matches = null;
         $matcher = preg_match_all($this->regex, $string, $matches);
@@ -236,14 +229,13 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Replaces variables in one of the URIs.
      *
-     * @param string $key    A key from URIs.
-     * @param array  $params Parameters to replace placeholders with.
-     *
-     * @return string A string with placeholders replaced.
+     * @param  string $key    A key from URIs.
+     * @param  array  $params Parameters to replace placeholders with.
+     * @return string
      *
      * @see self::$uris The URIs that can be replaced.
      */
-    public function uriReplace($key, $params)
+    public function uriReplace(string $key, array $params): string
     {
         $string = $this->uris[$key];
 
@@ -265,11 +257,12 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Gets an attribute on the part.
      *
-     * @param string $key The key to the attribute.
+     * @param  string $key The key to the attribute.
+     * @return mixed
      *
-     * @return mixed Either the attribute if it exists or void.
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getAttribute($key)
+    public function getAttribute(string $key)
     {
         if (isset($this->repositories[$key])) {
             $className = str_replace('\\', '', $this->repositories[$key]);
@@ -307,12 +300,11 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Sets an attribute on the part.
      *
-     * @param string $key   The key to the attribute.
-     * @param mixed  $value The value of the attribute.
-     *
+     * @param  string $key   The key to the attribute.
+     * @param  mixed  $value The value of the attribute.
      * @return void
      */
-    public function setAttribute($key, $value)
+    public function setAttribute(string $key, $value): void
     {
         if (isset($this->repositories[$key])) {
             if (! ($value instanceof $this->repositories[$key])) {
@@ -320,7 +312,6 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
             }
 
             $className = str_replace('\\', '', $this->repositories[$key]);
-
             $this->cache->set("repositories.{$className}.{$this->id}.{$key}", $value);
 
             return;
@@ -366,9 +357,11 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
      * @param  string $key The attribute key.
      * @return mixed
      *
+     * @throws \Psr\Cache\InvalidArgumentException
+     *
      * @see self::getAttribute() This function forwards onto getAttribute.
      */
-    public function offsetGet($key)
+    public function offsetGet($key): bool
     {
         return $this->getAttribute($key);
     }
@@ -393,7 +386,7 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
      *
      * @see self::setAttribute() This function forwards onto setAttribute.
      */
-    public function offsetSet($key, $value): bool
+    public function offsetSet($key, $value): void
     {
         $this->setAttribute($key, $value);
     }
@@ -424,8 +417,7 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Unserializes some data and stores it. Used for Serializable.
      *
-     * @param mixed $data Some serialized data.
-     *
+     * @param  mixed $data Some serialized data.
      * @return mixed Unserialized data.
      *
      * @see self::setAttribute() The unserialized data is stored with setAttribute.
@@ -440,10 +432,9 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     }
 
     /**
-     * Provides data when the part is encoded into
-     * JSON. Used for JsonSerializable.
+     * Provides data when the part is encoded into JSON. Used for JsonSerializable.
      *
-     * @return array An array of public attributes.
+     * @return array
      *
      * @see self::getPublicAttributes() This function forwards onto getPublicAttributes.
      */
@@ -455,9 +446,9 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Returns an array of public attributes.
      *
-     * @return array An array of public attributes.
+     * @return array
      */
-    public function getPublicAttributes()
+    public function getPublicAttributes(): array
     {
         $data = [];
 
@@ -525,9 +516,8 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Handles dynamic get calls onto the part.
      *
-     * @param string $key The attributes key.
-     *
-     * @return mixed The value of the attribute.
+     * @param  string $key The attributes key.
+     * @return mixed
      *
      * @see self::getAttribute() This function forwards onto getAttribute.
      */

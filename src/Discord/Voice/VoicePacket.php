@@ -130,6 +130,7 @@ class VoicePacket
         $header                                     = new Buffer(self::RTP_HEADER_BYTE_LENGTH);
         $header[self::RTP_VERSION_PAD_EXTEND_INDEX] = pack('c', self::RTP_VERSION_PAD_EXTEND);
         $header[self::RTP_PAYLOAD_INDEX]            = pack('c', self::RTP_PAYLOAD_TYPE);
+
         $header->writeShort($this->seq, self::SEQ_INDEX);
         $header->writeInt($this->timestamp, self::TIMESTAMP_INDEX);
         $header->writeInt($this->ssrc, self::SSRC_INDEX);

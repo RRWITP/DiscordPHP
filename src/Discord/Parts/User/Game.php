@@ -13,8 +13,8 @@ use Discord\Parts\Part;
  */
 class Game extends Part
 {
-    const TYPE_PLAYING   = 0;
-    const TYPE_STREAMING = 1;
+    public const TYPE_PLAYING   = 0;
+    public const TYPE_STREAMING = 1;
 
     /**
      * {@inheritdoc}

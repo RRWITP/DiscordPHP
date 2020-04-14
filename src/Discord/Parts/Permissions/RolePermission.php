@@ -67,7 +67,7 @@ class RolePermission extends Permission
     /**
      * {@inheritdoc}
      */
-    public function getDefault()
+    public function getDefault(): array
     {
         return [
             'create_instant_invite' => true,

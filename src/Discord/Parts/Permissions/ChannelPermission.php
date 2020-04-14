@@ -55,11 +55,10 @@ class ChannelPermission extends Permission
     /**
      * {@inheritdoc}
      *
-     * @param int $deny The deny bitwise integer.
-     *
-     * @return this
+     * @param  int $deny The deny bitwise integer.
+     * @return self
      */
-    public function decodeBitwise($bitwise, $deny = 0)
+    public function decodeBitwise($bitwise, $deny = 0): self
     {
         $result = $this->getDefault();
 
@@ -81,7 +80,7 @@ class ChannelPermission extends Permission
      *
      * @return array Bitwise.
      */
-    public function getBitwiseAttribute()
+    public function getBitwiseAttribute(): array
     {
         $allow = 0;
         $deny  = 0;
@@ -100,7 +99,7 @@ class ChannelPermission extends Permission
     /**
      * {@inheritdoc}
      */
-    public function getDefault()
+    public function getDefault(): array
     {
         $default = [];
 

@@ -9,10 +9,12 @@ use Discord\Exceptions\Rest\NoPermissionsException;
 use Discord\Exceptions\Rest\NotFoundException;
 use Discord\Parts\Channel\Channel;
 use Discord\Wrapper\CacheWrapper;
+use Exception;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Str;
 use React\Promise\Deferred;
+use React\Promise\Promise;
 
 /**
  * Provides an easy wrapper for HTTP requests, allows for interchangable connectors.
@@ -93,7 +95,7 @@ class Http
      * @param string $name   The endpoint that will be queried.
      * @param array  $params Parameters that will be encoded into JSON and sent with the request.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      *
      * @see \Discord\Helpers\Guzzle::runRequest() This function will be forwareded onto runRequest.
      */
@@ -126,7 +128,7 @@ class Http
      * @throws NoPermissionsException
      * @throws NotFoundException
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     private function runRequest($method, $url, $content, $extraHeaders, $cache, $blocking, $options)
     {
@@ -184,21 +186,11 @@ class Http
                 $deferred->resolve($json);
             },
             function ($e) use ($deferred, $url) {
-                if (! ($e instanceof \Exception)) {
+                if (! ($e instanceof Exception)) {
                     if (is_callable([$e, 'getStatusCode'])) {
-                        $e = $this->handleError(
-                            $e->getStatusCode(),
-                            $e->getReasonPhrase(),
-                            $e->getBody(),
-                            $url
-                        );
+                        $e = $this->handleError($e->getStatusCode(), $e->getReasonPhrase(), $e->getBody(), $url);
                     } else {
-                        $e = $this->handleError(
-                            0,
-                            'unknown',
-                            'unknown',
-                            $url
-                        );
+                        $e = $this->handleError(0, 'unknown', 'unknown', $url);
                     }
                 }
 
@@ -215,30 +207,24 @@ class Http
     /**
      * Uploads a file to a channel.
      *
-     * @param Channel $channel  The channel to send to.
-     * @param string  $filepath The path to the file.
-     * @param string  $filename The name to upload the file as.
-     * @param string  $content  Extra text content to go with the file.
-     * @param bool    $tts      Whether the message should be TTS.
+     * @param  Channel $channel  The channel to send to.
+     * @param  string  $filepath The path to the file.
+     * @param  string  $filename The name to upload the file as.
+     * @param  string  $content  Extra text content to go with the file.
+     * @param  bool    $tts      Whether the message should be TTS.
+     * @return Promise
      *
-     * @return \React\Promise\Promise
+     * @throws ContentTooLongException
+     * @throws DiscordRequestFailedException
+     * @throws NoPermissionsException
+     * @throws NotFoundException
      */
-    public function sendFile(Channel $channel, $filepath, $filename, $content, $tts)
+    public function sendFile(Channel $channel, string $filepath, string $filename, string $content, bool $tts): Promise
     {
         $multipart = [
-            [
-                'name'     => 'file',
-                'contents' => fopen($filepath, 'r'),
-                'filename' => $filename,
-            ],
-            [
-                'name'     => 'tts',
-                'contents' => ($tts ? 'true' : 'false'),
-            ],
-            [
-                'name'     => 'content',
-                'contents' => (string) $content,
-            ],
+            ['name' => 'file', 'contents' => fopen($filepath, 'r'), 'filename' => $filename],
+            ['name' => 'tts', 'contents' => ($tts ? 'true' : 'false')],
+            ['name' => 'content', 'contents' => (string) $content],
         ];
 
         return $this->runRequest(
@@ -260,14 +246,12 @@ class Http
      * @param string          $content   The HTTP response content.
      * @param string          $url       The HTTP url.
      *
-     * @return \Discord\Exceptions\DiscordRequestFailedException Returned when the request fails.
-     * @return \Discord\Exceptions\Rest\ContentTooLongException  Returned when the content is longer than 2000
-     *                                                           characters.
-     * @return \Discord\Exceptions\Rest\NotFoundException        Returned when the server returns 404 Not Found.
-     * @return \Discord\Exceptions\Rest\NoPermissionsException   Returned when you do not have permissions to do
-     *                                                           something.
+     * @return DiscordRequestFailedException Returned when the request fails.
+     * @return ContentTooLongException       Returned when the content is longer than 2000 characters.
+     * @return NotFoundException             Returned when the server returns 404 Not Found.
+     * @return NoPermissionsException        Returned when you do not have permissions to do something.
      */
-    public function handleError($errorCode, $message, $content, $url)
+    public function handleError(int $errorCode, $message, string $content, string $url): Exception
     {
         if (! is_string($message)) {
             $message = $message->getReasonPhrase();
@@ -276,15 +260,9 @@ class Http
         $message .= " - {$content} - {$url}";
 
         switch ($errorCode) {
-            case 400:
-                return new DiscordRequestFailedException("Error code 400: We sent a bad request. {$message}");
-                break;
-            case 403:
-                return new NoPermissionsException("Error code 403: You do not have permission to do this. {$message}");
-                break;
-            case 404:
-                return new NotFoundException("Error code 404: This resource does not exist. {$message}");
-                break;
+            case 400: return new DiscordRequestFailedException("Error code 400: We sent a bad request. {$message}");
+            case 403: return new NoPermissionsException("Error code 403: You do not have permission to do this. {$message}");
+            case 404: return new NotFoundException("Error code 404: This resource does not exist. {$message}");
             case 500:
                 if (Str::contains(strtolower($content), ['longer than 2000 characters', 'string value is too long'])) {
                     // Discord has set a restriction with content sent over REST,
@@ -297,15 +275,9 @@ class Http
                     );
                 }
 
-                return new DiscordRequestFailedException(
-                    "Error code 500: This usually means something went wrong with Discord. {$message}"
-                );
-                break;
-            default:
-                return new DiscordRequestFailedException(
-                    "Error code {$errorCode}: There was an error processing the request. {$message}"
-                );
-                break;
+                return new DiscordRequestFailedException("Error code 500: This usually means something went wrong with Discord. {$message}");
+
+            default: return new DiscordRequestFailedException("Error code {$errorCode}: There was an error processing the request. {$message}");
         }
     }
 
@@ -314,7 +286,7 @@ class Http
      *
      * @return string
      */
-    public function getUserAgent()
+    public function getUserAgent(): string
     {
         return 'DiscordPHP/'.$this->version.' DiscordBot (https://github.com/teamreflex/DiscordPHP, '.$this->version.')';
     }

@@ -114,7 +114,7 @@ class Process extends EventEmitter
             stream_set_blocking($pipe, 0);
         }
 
-        $loop->addPeriodicTimer($interval, function (Timer $timer) {
+        $loop->addPeriodicTimer($interval, static function (Timer $timer): void {
             if (! $this->isRunning()) {
                 // $this->close();
                 $timer->cancel();
@@ -233,7 +233,7 @@ class Process extends EventEmitter
      *
      * @return int|null
      */
-    public function getExitCode()
+    public function getExitCode(): ?int
     {
         return $this->exitCode;
     }

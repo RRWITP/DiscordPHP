@@ -16,14 +16,8 @@ class Permission extends Part
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        Factory $factory,
-        Discord $discord,
-        Http $http,
-        CacheWrapper $cache,
-        array $attributes = [],
-        $created = false
-    ) {
+    public function __construct(Factory $factory, Discord $discord, Http $http, CacheWrapper $cache, array $attributes = [], bool $created = false)
+    {
         $this->fillable   = array_keys($this->bitwise);
         $this->fillable[] = 'bitwise';
 
@@ -42,11 +36,10 @@ class Permission extends Part
     /**
      * Decodes a bitwise integer.
      *
-     * @param int $bitwise The bitwise integer to decode.
-     *
-     * @return this
+     * @param  int $bitwise The bitwise integer to decode.
+     * @return self
      */
-    public function decodeBitwise($bitwise)
+    public function decodeBitwise($bitwise): self
     {
         $result = [];
 
@@ -62,7 +55,7 @@ class Permission extends Part
     /**
      * Retrieves the bitwise integer.
      *
-     * @return int
+     * @return array|int
      */
     public function getBitwiseAttribute()
     {
@@ -82,9 +75,9 @@ class Permission extends Part
     /**
      * Returns the default permissions.
      *
-     * @return array Default perms.
+     * @return array
      */
-    public function getDefault()
+    public function getDefault(): array
     {
         return [];
     }

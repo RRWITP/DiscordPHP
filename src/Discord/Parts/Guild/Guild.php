@@ -245,7 +245,7 @@ class Guild extends Part
     /**
      * Returns the joined_at attribute.
      *
-     * @return Carbon|null The joined_at attribute.
+     * @return Carbon|null
      */
     public function getJoinedAtAttribute(): ?Carbon
     {

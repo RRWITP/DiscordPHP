@@ -13,24 +13,18 @@ class Factory
 {
     /**
      * The Discord client.
-     *
-     * @var Discord Client.
      */
-    protected $discord;
+    protected Discord $discord;
 
     /**
      * The HTTP client.
-     *
-     * @var Http Client.
      */
-    protected $http;
+    protected Http $http;
 
     /**
-     * The cache.
-     *
-     * @var CacheWrapper Cache.
+     * The cacheWrapper for the driver.
      */
-    protected $cache;
+    protected CacheWrapper $cache;
     /**
      * Constructs a factory.
      *
@@ -48,11 +42,12 @@ class Factory
     /**
      * Creates an object.
      *
-     * @param string $class   The class to build.
-     * @param array  $data    Data to create the object.
-     * @param bool   $created Whether the object is created (if part).
-     *
+     * @param  string $class The class to build.
+     * @param  array $data Data to create the object.
+     * @param  bool $created Whether the object is created (if part).
      * @return mixed The object.
+     *
+     * @throws \Exception
      */
     public function create($class, $data = [], $created = false)
     {

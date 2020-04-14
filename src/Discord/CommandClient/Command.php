@@ -173,7 +173,7 @@ class Command
      * Handles dynamic get calls to the class.
      *
      * @param  string $variable The variable to get.
-     * @return mixed.
+     * @return mixed
      */
     public function __get($variable)
     {
