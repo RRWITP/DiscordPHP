@@ -47,45 +47,37 @@ abstract class Event
     public const GUILD_ROLE_DELETE    = 'GUILD_ROLE_DELETE';
 
     // Channel
-    const CHANNEL_CREATE      = 'CHANNEL_CREATE';
-    const CHANNEL_DELETE      = 'CHANNEL_DELETE';
-    const CHANNEL_UPDATE      = 'CHANNEL_UPDATE';
-    const CHANNEL_PINS_UPDATE = 'CHANNEL_PINS_UPDATE';
+    public const CHANNEL_CREATE      = 'CHANNEL_CREATE';
+    public const CHANNEL_DELETE      = 'CHANNEL_DELETE';
+    public const CHANNEL_UPDATE      = 'CHANNEL_UPDATE';
+    public const CHANNEL_PINS_UPDATE = 'CHANNEL_PINS_UPDATE';
 
     // Messages
-    const MESSAGE_CREATE              = 'MESSAGE_CREATE';
-    const MESSAGE_DELETE              = 'MESSAGE_DELETE';
-    const MESSAGE_UPDATE              = 'MESSAGE_UPDATE';
-    const MESSAGE_DELETE_BULK         = 'MESSAGE_DELETE_BULK';
-    const MESSAGE_REACTION_ADD        = 'MESSAGE_REACTION_ADD';
-    const MESSAGE_REACTION_REMOVE     = 'MESSAGE_REACTION_REMOVE';
-    const MESSAGE_REACTION_REMOVE_ALL = 'MESSAGE_REACTION_REMOVE_ALL';
+    public const MESSAGE_CREATE              = 'MESSAGE_CREATE';
+    public const MESSAGE_DELETE              = 'MESSAGE_DELETE';
+    public const MESSAGE_UPDATE              = 'MESSAGE_UPDATE';
+    public const MESSAGE_DELETE_BULK         = 'MESSAGE_DELETE_BULK';
+    public const MESSAGE_REACTION_ADD        = 'MESSAGE_REACTION_ADD';
+    public const MESSAGE_REACTION_REMOVE     = 'MESSAGE_REACTION_REMOVE';
+    public const MESSAGE_REACTION_REMOVE_ALL = 'MESSAGE_REACTION_REMOVE_ALL';
 
     /**
      * The HTTP client.
-     *
-     * @var Http Client.
      */
-    protected HTTP $http;
+    protected Http $http;
 
     /**
      * The Factory.
-     *
-     * @var Factory Factory.
      */
     protected Factory $factory;
 
     /**
-     * The cache.
-     *
-     * @var CacheWrapper Cache.
+     * The cacheWrapper for interaction with the cache.
      */
     protected CacheWrapper $cache;
 
     /**
      * The Discord client instance.
-     *
-     * @var Discord Client.
      */
     protected Discord $discord;
 
@@ -108,11 +100,11 @@ abstract class Event
     }
 
     /**
-     * Transforms the given data, and updates the
-     * Discord instance if necessary.
+     * Transforms the given data, and updates the Discord instance if necessary.
      *
-     * @param Deferred $deferred The promise to use
-     * @param array    $data     The data that was sent with the WebSocket
+     * @param  Deferred $deferred The promise to use
+     * @param  array    $data     The data that was sent with the WebSocket
+     * @return void
      */
     abstract public function handle(Deferred $deferred, $data): void;
 }
