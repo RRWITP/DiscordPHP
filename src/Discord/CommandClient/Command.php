@@ -12,38 +12,28 @@ class Command
 {
     /**
      * The trigger for the command.
-     *
-     * @var string Command trigger.
      */
-    protected $command;
+    protected string $command;
 
     /**
      * The description of the command.
-     *
-     * @var string Description.
      */
-    protected $description;
+    protected string $description;
 
     /**
      * The usage of the command.
-     *
-     * @var string Command usage.
      */
-    protected $usage;
+    protected string $usage;
 
     /**
      * A map of sub-commands.
-     *
-     * @var array Sub-Commands.
      */
-    protected $subCommands = [];
+    protected array $subCommands = [];
 
     /**
      * A map of sub-command aliases.
-     *
-     * @var array Sub-Command aliases.
      */
-    protected $subCommandAliases = [];
+    protected array $subCommandAliases = [];
 
     /**
      * Creates a command instance.
@@ -54,13 +44,8 @@ class Command
      * @param string               $description The description of the command.
      * @param string               $usage       The usage of the command.
      */
-    public function __construct(
-        DiscordCommandClient $client,
-        $command,
-        callable $callable,
-        $description,
-        $usage
-    ) {
+    public function __construct(DiscordCommandClient $client, $command, callable $callable, $description, $usage)
+    {
         $this->client      = $client;
         $this->command     = $command;
         $this->callable    = $callable;
@@ -71,13 +56,14 @@ class Command
     /**
      * Registers a new command.
      *
-     * @param string           $command  The command name.
-     * @param \Callable|string $callable The function called when the command is executed.
-     * @param array            $options  An array of options.
+     * @param  string           $command  The command name.
+     * @param  \Callable|string $callable The function called when the command is executed.
+     * @param  array            $options  An array of options.
+     * @return Command
      *
-     * @return Command The command instance.
+     * @throws \Exception
      */
-    public function registerSubCommand($command, $callable, array $options = [])
+    public function registerSubCommand(string $command, $callable, array $options = [])
     {
         if (array_key_exists($command, $this->subCommands)) {
             throw new \Exception("A sub-command with the name {$command} already exists.");
@@ -96,9 +82,12 @@ class Command
     /**
      * Unregisters a sub-command.
      *
-     * @param string $command The command name.
+     * @param  string $command The command name.
+     * @return void
+     *
+     * @throws \Exception
      */
-    public function unregisterSubCommand($command)
+    public function unregisterSubCommand($command): void
     {
         if (! array_key_exists($command, $this->subCommands)) {
             throw new \Exception("A sub-command with the name {$command} does not exist.");
@@ -110,10 +99,11 @@ class Command
     /**
      * Registers a sub-command alias.
      *
-     * @param string $alias   The alias to add.
-     * @param string $command The command.
+     * @param  string $alias   The alias to add.
+     * @param  string $command The command.
+     * @return void
      */
-    public function registerSubCommandAlias($alias, $command)
+    public function registerSubCommandAlias($alias, $command): void
     {
         $this->subCommandAliases[$alias] = $command;
     }
@@ -121,9 +111,12 @@ class Command
     /**
      * Unregisters a sub-command alias.
      *
-     * @param string $alias The alias name.
+     * @param  string $alias The alias name.
+     * @return void
+     *
+     * @throws \Exception
      */
-    public function unregisterSubCommandAlias($alias)
+    public function unregisterSubCommandAlias($alias): string
     {
         if (! array_key_exists($alias, $this->subCommandAliases)) {
             throw new \Exception("A sub-command alias with the name {$alias} does not exist.");
@@ -135,10 +128,9 @@ class Command
     /**
      * Executes the command.
      *
-     * @param Message $message The message.
-     * @param array   $args    An array of arguments.
-     *
-     * @return mixed The response.
+     * @param  Message $message The message.
+     * @param  array   $args    An array of arguments.
+     * @return mixed
      */
     public function handle(Message $message, array $args)
     {
@@ -146,7 +138,9 @@ class Command
 
         if (array_key_exists($subCommand, $this->subCommands)) {
             return $this->subCommands[$subCommand]->handle($message, $args);
-        } elseif (array_key_exists($subCommand, $this->subCommandAliases)) {
+        }
+
+        if (array_key_exists($subCommand, $this->subCommandAliases)) {
             return $this->subCommands[$this->subCommandAliases[$subCommand]]->handle($message, $args);
         }
 
@@ -160,11 +154,10 @@ class Command
     /**
      * Gets help for the command.
      *
-     * @param string $prefix The prefix of the bot.
-     *
-     * @return string The help.
+     * @param  string $prefix The prefix of the bot.
+     * @return array
      */
-    public function getHelp($prefix)
+    public function getHelp(string $prefix): array
     {
         $helpString = "{$prefix}{$this->command} {$this->usage}- {$this->description}\r\n";
 
@@ -173,18 +166,14 @@ class Command
             $helpString .= "    {$help['text']}\r\n";
         }
 
-        return [
-            'text'              => $helpString,
-            'subCommandAliases' => $this->subCommandAliases,
-        ];
+        return ['text' => $helpString, 'subCommandAliases' => $this->subCommandAliases];
     }
 
     /**
      * Handles dynamic get calls to the class.
      *
-     * @param string $variable The variable to get.
-     *
-     * @return mixed The value.
+     * @param  string $variable The variable to get.
+     * @return mixed.
      */
     public function __get($variable)
     {
