@@ -42,10 +42,10 @@ class Handlers
         $this->addHandler(Event::GUILD_UPDATE, \Discord\WebSockets\Events\GuildUpdate::class);
 
         // Channel Event handlers
-        $this->addHandler(Event::CHANNEL_CREATE, \Discord\WebSockets\Events\ChannelCreate::class);
-        $this->addHandler(Event::CHANNEL_UPDATE, \Discord\WebSockets\Events\ChannelUpdate::class);
-        $this->addHandler(Event::CHANNEL_DELETE, \Discord\WebSockets\Events\ChannelDelete::class);
-        $this->addHandler(Event::CHANNEL_PINS_UPDATE, \Discord\WebSockets\Events\ChannelPinsUpdate::class);
+        $this->addHandler(Event::CHANNEL_CREATE, \Discord\WebSockets\Events\Channel\ChannelCreate::class);
+        $this->addHandler(Event::CHANNEL_UPDATE, \Discord\WebSockets\Events\Channel\Update::class);
+        $this->addHandler(Event::CHANNEL_DELETE, \Discord\WebSockets\Events\Channel\Delete::class);
+        $this->addHandler(Event::CHANNEL_PINS_UPDATE, \Discord\WebSockets\Events\Channel\PinsUpdate::class);
 
         // Ban Event handlers
         $this->addHandler(Event::GUILD_BAN_ADD, \Discord\WebSockets\Events\GuildBanAdd::class);
