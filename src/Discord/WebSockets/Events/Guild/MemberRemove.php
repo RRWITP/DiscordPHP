@@ -9,13 +9,13 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class GuildMemberAdd extends Event
+class MemberRemove extends Event
 {
     /**
      * {@inheritdoc}
@@ -27,8 +27,8 @@ class GuildMemberAdd extends Event
         $guild = $this->discord->guilds->get('id', $memberPart->guild_id);
 
         if (! is_null($guild)) {
-            $guild->members->push($memberPart);
-            ++$guild->member_count;
+            $guild->members->pull($memberPart->id);
+            --$guild->member_count;
 
             $this->discord->guilds->push($guild);
         }

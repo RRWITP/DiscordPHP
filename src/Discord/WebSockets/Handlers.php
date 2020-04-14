@@ -37,9 +37,9 @@ class Handlers
         $this->addHandler(Event::VOICE_SERVER_UPDATE, \Discord\WebSockets\Events\VoiceServerUpdate::class);
 
         // Guild Event handlers
-        $this->addHandler(Event::GUILD_CREATE, \Discord\WebSockets\Events\GuildCreate::class);
-        $this->addHandler(Event::GUILD_DELETE, \Discord\WebSockets\Events\GuildDelete::class);
-        $this->addHandler(Event::GUILD_UPDATE, \Discord\WebSockets\Events\GuildUpdate::class);
+        $this->addHandler(Event::GUILD_CREATE, \Discord\WebSockets\Events\Guild\Create::class);
+        $this->addHandler(Event::GUILD_DELETE, \Discord\WebSockets\Events\Guild\Delete::class);
+        $this->addHandler(Event::GUILD_UPDATE, \Discord\WebSockets\Events\Guild\Update::class);
 
         // Channel Event handlers
         $this->addHandler(Event::CHANNEL_CREATE, \Discord\WebSockets\Events\Channel\ChannelCreate::class);
@@ -48,8 +48,8 @@ class Handlers
         $this->addHandler(Event::CHANNEL_PINS_UPDATE, \Discord\WebSockets\Events\Channel\PinsUpdate::class);
 
         // Ban Event handlers
-        $this->addHandler(Event::GUILD_BAN_ADD, \Discord\WebSockets\Events\GuildBanAdd::class);
-        $this->addHandler(Event::GUILD_BAN_REMOVE, \Discord\WebSockets\Events\GuildBanRemove::class);
+        $this->addHandler(Event::GUILD_BAN_ADD, \Discord\WebSockets\Events\Guild\BanAdd::class);
+        $this->addHandler(Event::GUILD_BAN_REMOVE, \Discord\WebSockets\Events\Guild\BanRemove::class);
 
         // Message handlers
         $this->addHandler(Event::MESSAGE_CREATE, \Discord\WebSockets\Events\MessageCreate::class, ['message']);
@@ -61,14 +61,14 @@ class Handlers
         $this->addHandler(Event::MESSAGE_REACTION_REMOVE_ALL, \Discord\WebSockets\Events\MessageReactionRemoveAll::class);
 
         // New Member Event handlers
-        $this->addHandler(Event::GUILD_MEMBER_ADD, \Discord\WebSockets\Events\GuildMemberAdd::class);
-        $this->addHandler(Event::GUILD_MEMBER_REMOVE, \Discord\WebSockets\Events\GuildMemberRemove::class);
-        $this->addHandler(Event::GUILD_MEMBER_UPDATE, \Discord\WebSockets\Events\GuildMemberUpdate::class);
+        $this->addHandler(Event::GUILD_MEMBER_ADD, \Discord\WebSockets\Events\Guild\MemberAdd::class);
+        $this->addHandler(Event::GUILD_MEMBER_REMOVE, \Discord\WebSockets\Events\Guild\MemberRemove::class);
+        $this->addHandler(Event::GUILD_MEMBER_UPDATE, \Discord\WebSockets\Events\Guild\MemberUpdate::class);
 
         // New Role Event handlers
-        $this->addHandler(Event::GUILD_ROLE_CREATE, \Discord\WebSockets\Events\GuildRoleCreate::class);
-        $this->addHandler(Event::GUILD_ROLE_DELETE, \Discord\WebSockets\Events\GuildRoleDelete::class);
-        $this->addHandler(Event::GUILD_ROLE_UPDATE, \Discord\WebSockets\Events\GuildRoleUpdate::class);
+        $this->addHandler(Event::GUILD_ROLE_CREATE, \Discord\WebSockets\Events\Guild\RoleCreate::class);
+        $this->addHandler(Event::GUILD_ROLE_DELETE, \Discord\WebSockets\Events\Guild\RoleDelete::class);
+        $this->addHandler(Event::GUILD_ROLE_UPDATE, \Discord\WebSockets\Events\Guild\RoleUpdate::class);
     }
 
     /**

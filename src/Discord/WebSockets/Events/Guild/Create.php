@@ -9,7 +9,7 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use Discord\Parts\Channel\Channel;
 use Discord\Parts\Guild\Ban;
@@ -24,7 +24,7 @@ use Discord\Repository\Guild\RoleRepository;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class GuildCreate extends Event
+class Create extends Event
 {
     /**
      * {@inheritdoc}

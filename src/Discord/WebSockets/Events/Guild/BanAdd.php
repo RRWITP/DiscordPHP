@@ -9,13 +9,13 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use Discord\Parts\Guild\Ban;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class GuildBanRemove extends Event
+class BanAdd extends Event
 {
     /**
      * {@inheritdoc}
@@ -29,7 +29,7 @@ class GuildBanRemove extends Event
         ], true);
 
         $guild = $this->discord->guilds->get('id', $ban->guild->id);
-        $guild->bans->pull($ban->id);
+        $guild->bans->push($ban);
 
         $deferred->resolve($ban);
     }

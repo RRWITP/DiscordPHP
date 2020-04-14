@@ -9,13 +9,13 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
 use Discord\Parts\Guild\Guild;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class GuildDelete extends Event
+class Delete extends Event
 {
     /**
      * {@inheritdoc}

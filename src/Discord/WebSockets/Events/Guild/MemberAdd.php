@@ -9,29 +9,30 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace Discord\WebSockets\Events;
+namespace Discord\WebSockets\Events\Guild;
 
-use Discord\Parts\Guild\Role;
+use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 use React\Promise\Deferred;
 
-class GuildRoleCreate extends Event
+class MemberAdd extends Event
 {
     /**
      * {@inheritdoc}
      */
     public function handle(Deferred $deferred, $data): void
     {
-        $adata             = (array) $data->role;
-        $adata['guild_id'] = $data->guild_id;
+        $memberPart = $this->factory->create(Member::class, $data, true);
 
-        $rolePart = $this->factory->create(Role::class, $adata, true);
+        $guild = $this->discord->guilds->get('id', $memberPart->guild_id);
 
-        $guild = $this->discord->guilds->get('id', $rolePart->guild_id);
         if (! is_null($guild)) {
-            $guild->roles->push($rolePart);
+            $guild->members->push($memberPart);
+            ++$guild->member_count;
+
+            $this->discord->guilds->push($guild);
         }
 
-        $deferred->resolve($rolePart);
+        $deferred->resolve($memberPart);
     }
 }
