@@ -9,4 +9,5 @@ use Discord\Exceptions\Rest\ContentTooLongException as Base;
  */
 class ContentTooLongException extends Base
 {
+    //
 }
