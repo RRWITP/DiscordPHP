@@ -8,6 +8,7 @@ use Discord\Parts\Part;
 use Discord\Parts\User\Member;
 use Discord\Repository\Guild as Repository;
 use React\Promise\Deferred;
+use React\Promise\Promise;
 
 /**
  * A Guild is Discord's equivalent of a server. It contains all the Members, Channels, Roles, Bans etc.
@@ -236,7 +237,7 @@ class Guild extends Part
      *
      * @return \React\Promise\Promise
      */
-    public function getOwnerAttribute()
+    public function getOwnerAttribute(): Promise
     {
         return $this->discord->users->get('id', $this->owner_id);
     }
@@ -246,7 +247,7 @@ class Guild extends Part
      *
      * @return Carbon|null The joined_at attribute.
      */
-    public function getJoinedAtAttribute()
+    public function getJoinedAtAttribute(): ?Carbon
     {
         if (! array_key_exists('joined_at', $this->attributes)) {
             return;
@@ -261,9 +262,9 @@ class Guild extends Part
      * @param string $format The image format.
      * @param int    $size   The size of the image.
      *
-     * @return string|null The URL to the guild icon or null.
+     * @return string|null
      */
-    public function getIconAttribute($format = 'jpg', $size = 1024)
+    public function getIconAttribute($format = 'jpg', $size = 1024): ?string
     {
         if (is_null($this->attributes['icon'])) {
             return;
@@ -279,9 +280,9 @@ class Guild extends Part
     /**
      * Returns the guild icon hash.
      *
-     * @return string|null The guild icon hash or null.
+     * @return string|null
      */
-    public function getIconHashAttribute()
+    public function getIconHashAttribute(): ?string
     {
         return $this->attributes['icon'];
     }
@@ -292,9 +293,9 @@ class Guild extends Part
      * @param string $format The image format.
      * @param int    $size   The size of the image.
      *
-     * @return string|null The URL to the guild splash or null.
+     * @return string|null
      */
-    public function getSplashAttribute($format = 'jpg', $size = 2048)
+    public function getSplashAttribute($format = 'jpg', $size = 2048): ?string
     {
         if (is_null($this->attributes['splash'])) {
             return;
@@ -310,9 +311,9 @@ class Guild extends Part
     /**
      * Returns the guild splash hash.
      *
-     * @return string|null The guild splash hash or null.
+     * @return string|null
      */
-    public function getSplashHashAttribute()
+    public function getSplashHashAttribute(): ?string
     {
         return $this->attributes['splash'];
     }
@@ -320,11 +321,11 @@ class Guild extends Part
     /**
      * Validates the specified region.
      *
-     * @return string Returns the region if it is valid or default.
+     * @return string
      *
      * @see self::REGION_DEFAULT The default region.
      */
-    public function validateRegion()
+    public function validateRegion(): string
     {
         if (! in_array($this->region, $this->regions)) {
             return self::REGION_DEFUALT;
@@ -336,7 +337,7 @@ class Guild extends Part
     /**
      * {@inheritdoc}
      */
-    public function setCache($key, $value)
+    public function setCache($key, $value): void
     {
         $this->cache->set("guild.{$this->id}.{$key}", $value);
     }
@@ -344,18 +345,15 @@ class Guild extends Part
     /**
      * {@inheritdoc}
      */
-    public function getCreatableAttributes()
+    public function getCreatableAttributes(): array
     {
-        return [
-            'name'   => $this->name,
-            'region' => $this->validateRegion(),
-        ];
+        return ['name' => $this->name, 'region' => $this->validateRegion()];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getUpdatableAttributes()
+    public function getUpdatableAttributes(): array
     {
         return [
             'name'               => $this->name,
@@ -371,10 +369,8 @@ class Guild extends Part
     /**
      * {@inheritdoc}
      */
-    public function getRepositoryAttributes()
+    public function getRepositoryAttributes(): array
     {
-        return [
-            'guild_id' => $this->id,
-        ];
+        return ['guild_id' => $this->id];
     }
 }

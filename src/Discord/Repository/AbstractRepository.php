@@ -390,9 +390,8 @@ abstract class AbstractRepository implements RepositoryInterface, ArrayAccess, C
     /**
      * Handles dynamic calls to the repository.
      *
-     * @param string $function The function called.
-     * @param array  $params   Array of parameters.
-     *
+     * @param  string $function The function called.
+     * @param  array  $params   Array of parameters.
      * @return mixed
      */
     public function __call($function, array $params)

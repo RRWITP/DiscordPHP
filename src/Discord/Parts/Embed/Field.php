@@ -10,6 +10,8 @@ use Discord\Parts\Part;
  * @property string $name   The name of the field.
  * @property string $value  The value of the field.
  * @property bool   $inline Whether the field should be displayed in-line.
+ *
+ * @package Discord\Parts\Embed
  */
 class Field extends Part
 {
@@ -21,9 +23,9 @@ class Field extends Part
     /**
      * Gets the inline attribute.
      *
-     * @return bool The inline attribute.
+     * @return bool
      */
-    public function getInlineAttribute()
+    public function getInlineAttribute(): bool
     {
         if (! array_key_exists('inline', $this->attributes)) {
             return false;

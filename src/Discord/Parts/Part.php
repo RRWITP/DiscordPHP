@@ -321,10 +321,7 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
 
             $className = str_replace('\\', '', $this->repositories[$key]);
 
-            $this->cache->set(
-                "repositories.{$className}.{$this->id}.{$key}",
-                $value
-            );
+            $this->cache->set("repositories.{$className}.{$this->id}.{$key}", $value);
 
             return;
         }
@@ -343,9 +340,8 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Sets a cache attribute on the part.
      *
-     * @param string $key   The cache key.
-     * @param mixed  $value The cache value.
-     *
+     * @param  string $key   The cache key.
+     * @param  mixed  $value The cache value.
      * @return void
      */
     public function setCache($key, $value)
@@ -356,11 +352,10 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Checks if the cache has a specific key.
      *
-     * @param string $key The key to check for.
-     *
-     * @return bool Whether the cache has the key.
+     * @param  string $key The key to check for.
+     * @return bool
      */
-    public function cacheHas($key)
+    public function cacheHas($key): bool
     {
         return isset($this->attributes_cache[$key]);
     }
@@ -368,8 +363,7 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Gets an attribute via key. Used for ArrayAccess.
      *
-     * @param string $key The attribute key.
-     *
+     * @param  string $key The attribute key.
      * @return mixed
      *
      * @see self::getAttribute() This function forwards onto getAttribute.
@@ -382,11 +376,10 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Checks if an attribute exists via key. Used for ArrayAccess.
      *
-     * @param string $key The attribute key.
-     *
-     * @return bool Whether the offset exists.
+     * @param  string $key The attribute key.
+     * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return isset($this->attributes[$key]);
     }
@@ -394,14 +387,13 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Sets an attribute via key. Used for ArrayAccess.
      *
-     * @param string $key   The attribute key.
-     * @param mixed  $value The attribute value.
-     *
+     * @param  string $key   The attribute key.
+     * @param  mixed  $value The attribute value.
      * @return void
      *
      * @see self::setAttribute() This function forwards onto setAttribute.
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): bool
     {
         $this->setAttribute($key, $value);
     }
@@ -409,11 +401,10 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Unsets an attribute via key. Used for ArrayAccess.
      *
-     * @param string $key The attribute key.
-     *
+     * @param  string $key The attribute key.
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         if (isset($this->attributes[$key])) {
             unset($this->attributes[$key]);
@@ -456,7 +447,7 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
      *
      * @see self::getPublicAttributes() This function forwards onto getPublicAttributes.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->getPublicAttributes();
     }
@@ -490,9 +481,9 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Returns an array of raw attributes.
      *
-     * @return array Raw attributes.
+     * @return array
      */
-    public function getRawAttributes()
+    public function getRawAttributes(): array
     {
         return $this->attributes;
     }
@@ -500,9 +491,9 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Gets the attributes to pass to repositories.
      *
-     * @return array Attributes.
+     * @return array
      */
-    public function getRepositoryAttributes()
+    public function getRepositoryAttributes(): array
     {
         return $this->attributes;
     }
@@ -510,11 +501,11 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Converts the part to a string.
      *
-     * @return string A JSON string of attributes.
+     * @return string
      *
      * @see self::getPublicAttributes() This function encodes getPublicAttributes into JSON.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode($this->getPublicAttributes());
     }
@@ -522,11 +513,11 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Handles debug calls from var_dump and similar functions.
      *
-     * @return array An array of public attributes.
+     * @return array
      *
      * @see self::getPublicAttributes() This function forwards onto getPublicAttributes.
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return $this->getPublicAttributes();
     }
@@ -548,14 +539,13 @@ abstract class Part implements ArrayAccess, Serializable, JsonSerializable
     /**
      * Handles dynamic set calls onto the part.
      *
-     * @param string $key   The attributes key.
-     * @param mixed  $value The attributes value.
-     *
+     * @param  string $key   The attributes key.
+     * @param  mixed  $value The attributes value.
      * @return void
      *
      * @see self::setAttribute() This function forwards onto setAttribute.
      */
-    public function __set($key, $value)
+    public function __set($key, $value): void
     {
         $this->setAttribute($key, $value);
     }

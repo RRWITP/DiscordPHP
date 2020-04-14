@@ -22,9 +22,9 @@ class Ban extends Part
     /**
      * Returns the guild id attribute.
      *
-     * @return int The Guild ID attribute.
+     * @return int
      */
-    public function getGuildIdAttribute()
+    public function getGuildIdAttribute(): int
     {
         return $this->guild->id;
     }
@@ -32,9 +32,9 @@ class Ban extends Part
     /**
      * Returns the user id attribute.
      *
-     * @return int The User ID attribute.
+     * @return int
      */
-    public function getUserIdAttribute()
+    public function getUserIdAttribute(): int
     {
         return $this->user->id;
     }
@@ -42,9 +42,11 @@ class Ban extends Part
     /**
      * Gets the user attribute.
      *
-     * @return User The User that is banned.
+     * @return User
+     *
+     * @throws \Exception
      */
-    public function getUserAttribute()
+    public function getUserAttribute(): User
     {
         return $this->factory->create(User::class, (array) $this->attributes['user']);
     }
@@ -52,9 +54,9 @@ class Ban extends Part
     /**
      * Gets the guild attribute.
      *
-     * @return Guild The guild that the user is banned from.
+     * @return Guild
      */
-    public function getGuildAttribute()
+    public function getGuildAttribute(): Guild
     {
         return $this->discord->guilds->get('id', $this->attributes['guild']->id);
     }
@@ -62,7 +64,7 @@ class Ban extends Part
     /**
      * {@inheritdoc}
      */
-    public function getCreatableAttributes()
+    public function getCreatableAttributes(): array
     {
         return [];
     }
@@ -70,7 +72,7 @@ class Ban extends Part
     /**
      * {@inheritdoc}
      */
-    public function getUpdatableAttributes()
+    public function getUpdatableAttributes(): array
     {
         return [];
     }

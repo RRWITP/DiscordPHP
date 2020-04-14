@@ -87,12 +87,11 @@ class Message extends Part
     {
         $deferred = new Deferred();
 
-        $this->http->put(
-            "channels/{$this->channel->id}/messages/{$this->id}/reactions/{$emoticon}/@me"
-        )->then(
-            \React\Partial\bind_right($this->resolve, $deferred),
-            \React\Partial\bind_right($this->reject, $deferred)
-        );
+        $this->http->put("channels/{$this->channel->id}/messages/{$this->id}/reactions/{$emoticon}/@me")
+            ->then(
+                \React\Partial\bind_right($this->resolve, $deferred),
+                \React\Partial\bind_right($this->reject, $deferred)
+            );
 
         return $deferred->promise();
     }
@@ -267,9 +266,6 @@ class Message extends Part
      */
     public function getUpdatableAttributes()
     {
-        return [
-            'content'  => $this->content,
-            'mentions' => $this->mentions,
-        ];
+        return ['content'  => $this->content, 'mentions' => $this->mentions];
     }
 }

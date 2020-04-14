@@ -16,6 +16,7 @@ use Discord\Repository\Channel\MessageRepository;
 use Discord\Repository\Channel\OverwriteRepository;
 use Discord\Repository\Channel\VoiceMemberRepository as MemberRepository;
 use React\Promise\Deferred;
+use React\Promise\Promise;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Traversable;
 
@@ -127,7 +128,7 @@ class Channel extends Part
      * @param Member|Role       $part        Either a Member or Role, permissions will be set on it.
      * @param ChannelPermission $permissions The permissions that define what the Member/Role can and cannot do.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function setPermissions(Part $part, ChannelPermission $permissions = null)
     {
@@ -172,7 +173,7 @@ class Channel extends Part
      *
      * @param string $id The message snowflake.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function getMessage($id)
     {
@@ -184,7 +185,7 @@ class Channel extends Part
      *
      * @param Member|int The member to move. (either a Member part or the member ID)
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function moveMember($member)
     {
@@ -234,7 +235,7 @@ class Channel extends Part
      * @param bool $temporary Whether the invite is for temporary membership.
      * @param bool $xkcd      Whether to generate an XKCD invite.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function createInvite($max_age = 3600, $max_uses = 0, $temporary = false, $xkcd = false)
     {
@@ -267,7 +268,7 @@ class Channel extends Part
      *
      * @param array|Traversable $messages An array of messages to delete.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function deleteMessages($messages)
     {
@@ -321,7 +322,7 @@ class Channel extends Part
      *
      * @param array $options
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function getMessageHistory(array $options)
     {
@@ -336,6 +337,7 @@ class Channel extends Part
         $resolver->setAllowedValues('limit', range(1, 100));
 
         $options = $resolver->resolve($options);
+
         if (isset($options['before'], $options['after']) ||
             isset($options['before'], $options['around']) ||
             isset($options['around'], $options['around'])) {
@@ -377,7 +379,7 @@ class Channel extends Part
      *
      * @param Message $message The message to pin.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function pinMessage(Message $message)
     {
@@ -392,7 +394,7 @@ class Channel extends Part
         }
 
         $this->http->put("channels/{$this->id}/pins/{$message->id}")->then(
-            function () use (&$message, $deferred) {
+            static function () use (&$message, $deferred): void {
                 $message->pinned = true;
                 $deferred->resolve($message);
             },
@@ -407,7 +409,7 @@ class Channel extends Part
      *
      * @param Message $message The message to un-pin.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function unpinMessage(Message $message)
     {
@@ -435,7 +437,7 @@ class Channel extends Part
     /**
      * Returns the channels pinned messages.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function getPinnedMessages()
     {
@@ -461,7 +463,7 @@ class Channel extends Part
     /**
      * Returns the channels invites.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
     public function getInvites()
     {
@@ -510,9 +512,9 @@ class Channel extends Part
      * @param bool   $tts   Whether the message should be sent with text to speech enabled.
      * @param Embed  $embed An embed to send.
      *
-     * @return \React\Promise\Promise
+     * @return Promise
      */
-    public function sendMessage($text, $tts = false, $embed = null)
+    public function sendMessage(string $text, bool $tts = false, $embed = null): Promise
     {
         $deferred = new Deferred();
 
@@ -545,14 +547,13 @@ class Channel extends Part
     /**
      * Sends a file to the channel if it is a text channel.
      *
-     * @param string $filepath The path to the file to be sent.
-     * @param string $filename The name to send the file as.
-     * @param string $content  Message content to send with the file.
-     * @param bool   $tts      Whether to send the message with TTS.
-     *
-     * @return \React\Promise\Promise
+     * @param  string       $filepath The path to the file to be sent.
+     * @param  string|null  $filename The name to send the file as.
+     * @param  string|null  $content  Message content to send with the file.
+     * @param  bool         $tts      Whether to send the message with TTS.
+     * @return Promise
      */
-    public function sendFile($filepath, $filename = null, $content = null, $tts = false)
+    public function sendFile(string $filepath, ?string $filename = null, ?string $content = null, bool $tts = false): Promise
     {
         $deferred = new Deferred();
 
@@ -646,7 +647,7 @@ class Channel extends Part
      *
      * @return array The attributes that will be sent when this part is updated.
      */
-    public function getUpdatableAttributes()
+    public function getUpdatableAttributes(): array
     {
         return [
             'name'     => $this->name,
